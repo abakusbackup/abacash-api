@@ -1,7 +1,7 @@
 /**
  * Main application routes
  */
-
+ 
 'use strict';
 
 var errors = require('./components/errors');

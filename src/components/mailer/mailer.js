@@ -1,75 +1,70 @@
 var config = require('../../config/environment');
 var nodemailer = require('nodemailer');
 var ses = require('nodemailer-ses-transport');
-
-var templatesDir   = config.root+'/server/components/mailer/templates';
-var emailTemplates = require('email-templates')
+var handlebars = require('express-handlebars');
+var templatesDir = config.root+'/src/components/mailer/templates';
+var hbs = require('nodemailer-express-handlebars');
 
 var transporter = nodemailer.createTransport(ses({
-    accessKeyId: config.aws.smtp.accessKeyId,
-    secretAccessKey: config.aws.smtp.secretAccessKey,
-    region: config.aws.smtp.region
+    accessKeyId: config.aws.ses.accessKeyId,
+    secretAccessKey: config.aws.ses.secretAccessKey,
+    region: config.aws.ses.region
 }));
+
+var options = hbs({
+	viewEngine: handlebars.create({}),
+    viewPath: templatesDir
+});
+
+transporter.use('compile', options);
 
 
 exports.invite = function(user){
-	console.log(user);
-	emailTemplates(templatesDir, function(err, template) {
-		console.log(template)
-	  	if (err) {
-	    	console.log(err);
-	  	} else {
-	  		user.invitelink = config.domain+'/invite/'+user.meta.invite;
-	    	template('invite', user, function(err, html, text) {
-	      	if (err) {
-	        	console.log(err);
-	      	} else {
-	        	transporter.sendMail({
-		      		from: 'Sonnico CRM <Kristoffer@Larsen.so>',
-		      		to: user.email,
-		      		subject: 'Innvitasjon',
-		      		html: html,
-		      		text: text
-		    		}, function(err, responseStatus) {
-		          		if (err) {
-		            		console.log(err);
-		          		} else {
-		            		console.log(responseStatus.message);
-		         	 	}
-		        	});
-		      	}
-		    });
+
+	var mail = {
+	from: 'AbacashAdmin <Abacash@Abakus.no>',
+	to: user.email,
+	subject: 'Invitasjon til AbacashAdmin',
+	template: 'invite',
+	context: {
+		inviteLink: config.domain+'/invite/'+user.meta.redeem
+		}
+	}
+
+	transporter.sendMail(mail, function(err, responseStatus) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(responseStatus.message);
 		}
 	});
+
 }
 
-exports.restore = function(user){
-	emailTemplates(templatesDir, function(err, template) {
-	  	if (err) {
-	    	console.log(err);
-	  	} else {
-	  		user.restoreLink = config.domain+'/login/reset/'+user.meta.restore;
-	    	template('restore', user, function(err, html, text) {
-	      	if (err) {
-	        	console.log(err);
-	      	} else {
-	        	transporter.sendMail({
-		      		from: 'Sonnico CRM <Kristoffer@Larsen.so>',
-		      		to: user.email,
-		      		subject: 'Passord reset',
-		      		html: html,
-		      		text: text
-		    		}, function(err, responseStatus) {
-		          		if (err) {
-		            		console.log(err);
-		          		} else {
-		            		console.log(responseStatus.message);
-		         	 	}
-		        	});
-		      	}
-		    });
+exports.reset = function(user){
+
+	var mail = {
+	from: 'AbacashAdmin <Abacash@Abakus.no>',
+	to: user.email,
+	subject: 'Reset passord for AbacashAdmin',
+	template: 'reset',
+	context: {
+		resetLink: config.domain+'/reset/'+user.meta.restore
+		}
+	}
+	transporter.sendMail(mail, function(err, responseStatus) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(responseStatus.message);
 		}
 	});
+
 }
+
+
+ 
+
+
 
  

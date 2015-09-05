@@ -31,18 +31,17 @@ var all = {
 
   // api keys for AWS
   aws: {
-    smtp:
+    ses:
     {
-     accessKeyId: 'AKIAJ6EWUHYLCYAECHOA',
-     secretAccessKey: '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',
-     username: 'SES_SMTP_SONNICO',
+     accessKeyId: 'AKIAJ7BE6Z2YOYKLQTMQ',
+     secretAccessKey: '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',
+     username: 'SES_ABACASH',
      region: 'eu-west-1'
     }
   },
 
   // List of user roles
   userRoles: ['user', 'moderator', 'admin'],
-  customerRoles: ['customer', 'seller', 'internal', 'admin'],
 
   // MongoDB connection options
   mongo: {
