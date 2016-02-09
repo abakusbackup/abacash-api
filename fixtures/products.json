@@ -50,13 +50,49 @@
   {
     "model": "Product",
     "data": {
-      "type": "Test Product Type 4 System 2",
-      "price": 200.0,
-      "internalPrice": 150.0,
-      "name": "Test product 3",
+      "type": "Innskudd",
+      "price": -200.0,
+      "internalPrice": -200.0,
+      "name": "Innskudd 200",
       "active": true,
       "stock": 0,
       "systemId": 2
     }
+  },
+  {
+    "model": "Product",
+    "data": {
+      "type": "Type 2",
+      "price": 200.0,
+      "internalPrice": 150.0,
+      "name": "Test product 3v1",
+      "active": true,
+      "stock": 0,
+      "systemId": 2
+    }
+  },
+  {
+  "model": "Product",
+  "data": {
+    "type": "Type 2",
+    "price": 200.0,
+    "internalPrice": 150.0,
+    "name": "Test product 4",
+    "active": true,
+    "stock": 0,
+    "systemId": 2
+  }
+  },
+  {
+  "model": "Product",
+  "data": {
+    "type": "Type 2",
+    "price": 200.0,
+    "internalPrice": 150.0,
+    "name": "Test product 5",
+    "active": true,
+    "stock": 0,
+    "systemId": 2
+  }
   }
 ]

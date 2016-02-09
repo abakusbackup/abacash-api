@@ -1,13 +1,17 @@
 import express from 'express';
 import * as controller from '../controllers/user.controller';
+import * as account from '../controllers/account.controller';
 import * as middleware from '../auth/middleware';
 
 const router = express.Router();
-
 router.use(middleware.isAuthenticated);
+
+router.get('/me', account.retrieve);
+router.put('/me', account.update);
+router.delete('/me', account.destroy);
+
 router.get('/', controller.list);
 router.get('/:id', controller.retrieve);
-// router.get('/me', controller.me);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.delete('/:id', controller.destroy);

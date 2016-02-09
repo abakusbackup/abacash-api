@@ -141,4 +141,24 @@ describe('Users API', () => {
             });
         });
     });
+
+    describe('Retrieve current user', () => {
+
+        it('should retrieve a user', done => {
+            request(app)
+            .get('/users/1')
+            .set('Authorization', `Bearer ${token}`)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                const user = res.body;
+                user.name.should.equal('Test Bruker');
+                should.not.exist(user.hash);
+                done();
+            });
+        });
+        
+    });
+
 });
