@@ -135,7 +135,7 @@ describe('Users API', () => {
         it('should retrieve a user', done => {
             request(app)
             .get('/users/1')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -146,7 +146,7 @@ describe('Users API', () => {
                 done();
             });
         });
-        
+
     });
 
 });
