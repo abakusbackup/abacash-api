@@ -1,24 +1,12 @@
 import chai from 'chai';
 import request from 'supertest';
-import jwt from 'jsonwebtoken';
 import app from '../../src/app';
-import config from '../../src/config';
-import { loadFixtures, testUnauthenticated } from '../helpers';
+import { loadFixtures, testUnauthenticated, createAuthToken } from '../helpers';
 
 const should = chai.should();
 
 describe('Users API', () => {
-    const fixtures = [
-        'users.js',
-        'systems.json'
-    ];
-
-    const token = jwt.sign({}, config.jwtSecret, {
-        expiresIn: '7 days',
-        subject: 1 // fake user id
-    });
-
-    beforeEach(() => loadFixtures(fixtures));
+    beforeEach(() => loadFixtures());
 
     describe('List', () => {
         it('should not be possible to list users without a valid token', done => {
@@ -28,7 +16,7 @@ describe('Users API', () => {
         it('should list users', done => {
             request(app)
             .get('/users')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -50,7 +38,7 @@ describe('Users API', () => {
         it('should retrieve a user', done => {
             request(app)
             .get('/users/1')
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -78,7 +66,7 @@ describe('Users API', () => {
             request(app)
             .post('/users')
             .send(payload)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -101,7 +89,7 @@ describe('Users API', () => {
             request(app)
             .post('/users')
             .send(payload)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -129,7 +117,7 @@ describe('Users API', () => {
             request(app)
             .put('/users/1')
             .send(payload)
-            .set('Authorization', `Bearer ${token}`)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {

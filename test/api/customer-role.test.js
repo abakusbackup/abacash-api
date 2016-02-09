@@ -1,22 +1,18 @@
 import chai from 'chai';
 import request from 'supertest';
 import app from '../../src/app';
-import { loadFixtures } from '../helpers';
+import { loadFixtures, createAuthToken } from '../helpers';
 
 const should = chai.should();
 
 describe('Customer Role API', () => {
-    const fixtures = [
-        'systems.json',
-        'customer-roles.json'
-    ];
-
-    beforeEach(() => loadFixtures(fixtures));
+    beforeEach(() => loadFixtures());
 
     describe('List Roles', () => {
         it('should list roles', done => {
             request(app)
             .get('/1/roles')
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -40,6 +36,7 @@ describe('Customer Role API', () => {
             request(app)
             .post('/1/roles')
             .send(payload)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -63,6 +60,7 @@ describe('Customer Role API', () => {
             request(app)
             .put('/1/roles/1')
             .send(payload)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -81,6 +79,7 @@ describe('Customer Role API', () => {
             request(app)
             .put('/1/roles/1337')
             .send(payload)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(404)
             .end((err, res) => {
@@ -96,6 +95,7 @@ describe('Customer Role API', () => {
         it('should delete a role', done => {
             request(app)
             .delete('/1/roles/1')
+            .set('Authorization', createAuthToken())
             .expect(204)
             .end((err, res) => done(err));
         });

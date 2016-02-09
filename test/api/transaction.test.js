@@ -1,26 +1,18 @@
 import chai from 'chai';
 import request from 'supertest';
 import app from '../../src/app';
-import { loadFixtures, test404 } from '../helpers';
+import { loadFixtures, test404, getAPIToken } from '../helpers';
 
 chai.should();
 
 describe('Transaction API', () => {
-    const fixtures = [
-        'systems.json',
-        'customer-roles.json',
-        'customers.json',
-        'customer-roles.json',
-        'products.json',
-        'transactions.json'
-    ];
-
     describe('List transactions', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should list transactions', done => {
             request(app)
             .get('/1/transactions')
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -33,6 +25,7 @@ describe('Transaction API', () => {
         it('should not list transactions from other systems', done => {
             request(app)
             .get('/2/transactions')
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -42,11 +35,12 @@ describe('Transaction API', () => {
             });
         });
 
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should retrieve a transaction', done => {
             request(app)
             .get('/1/transactions/1')
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -57,13 +51,13 @@ describe('Transaction API', () => {
         });
 
         it('should return 404 for missing transaction', done => {
-            test404('/1/transactions/1337', done);
+            test404('/1/transactions/1337', done, getAPIToken());
         });
     });
 
 
     describe('Add a new transaction ', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should add a new transaction', done => {
             const newTransaction = {
@@ -74,6 +68,7 @@ describe('Transaction API', () => {
             request(app)
             .post('/1/transactions/')
             .send(newTransaction)
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -91,6 +86,7 @@ describe('Transaction API', () => {
             request(app)
             .post('/1/transactions/')
             .send(newTransaction)
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(400)
             .end((err, res) => {
@@ -110,6 +106,7 @@ describe('Transaction API', () => {
             request(app)
             .post('/1/transactions/') // system 1 enforces seller
             .send(newTransaction)
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(400)
             .end((err, res) => {
@@ -127,6 +124,7 @@ describe('Transaction API', () => {
             request(app)
             .post('/2/transactions/')
             .send(newTransaction)
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -143,6 +141,7 @@ describe('Transaction API', () => {
             request(app)
             .post('/1/transactions/')
             .send(newTransaction)
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(400)
             .end((err, res) => {
@@ -161,6 +160,7 @@ describe('Transaction API', () => {
             request(app)
             .post('/1/transactions/')
             .send(newTransaction)
+            .set('Authorization', getAPIToken())
             .expect('Content-Type', /json/)
             .expect(400)
             .end((err, res) => {

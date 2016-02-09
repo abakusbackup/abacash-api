@@ -40,11 +40,6 @@ apiRouter.use('/:system/users', systemRole);
 apiRouter.use('/:system/products', product);
 apiRouter.use('/:system/transactions', transaction);
 
-// apiRouter.use('/:system/roles', role);
-// apiRouter.use('/:system/products', product);
-// apiRouter.use('/:system/transaction', transaction);
-// apiRouter.use('/:system/customers', customer);
-
 router.use(errors.pageNotFoundMiddleware);
 router.use(errors.errorMiddleware);
 

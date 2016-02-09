@@ -7,8 +7,7 @@ import { loadFixtures } from '../helpers';
 chai.should();
 
 describe('APIToken API', () => {
-    const fixtures = ['users.js'];
-    beforeEach(() => loadFixtures(fixtures));
+    beforeEach(() => loadFixtures());
 
     describe('Creating a token', () => {
         it('should return a valid token for valid credentials', done => {

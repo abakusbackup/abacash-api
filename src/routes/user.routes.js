@@ -1,10 +1,11 @@
 import express from 'express';
 import * as controller from '../controllers/user.controller';
 import * as account from '../controllers/account.controller';
-import * as middleware from '../auth/middleware';
+import { isAuthenticated } from '../auth/middleware';
 
 const router = express.Router();
-router.use(middleware.isAuthenticated);
+
+router.use(isAuthenticated);
 
 router.get('/me', account.retrieve);
 router.put('/me', account.update);

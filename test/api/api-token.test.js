@@ -1,22 +1,18 @@
 import chai from 'chai';
 import request from 'supertest';
 import app from '../../src/app';
-import { loadFixtures, test404 } from '../helpers';
+import { loadFixtures, test404, createAuthToken } from '../helpers';
 
 chai.should();
 
 describe('APIToken API', () => {
-    const fixtures = [
-        'systems.json',
-        'api-tokens.json'
-    ];
-
     describe('List all tokens', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should list all tokens', done => {
             request(app)
             .get('/api-tokens/')
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -41,6 +37,7 @@ describe('APIToken API', () => {
             request(app)
             .post('/api-tokens')
             .send(body)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -60,6 +57,7 @@ describe('APIToken API', () => {
             request(app)
             .post('/api-tokens/')
             .send(auth)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(400)
             .end((err, res) => {
@@ -72,11 +70,12 @@ describe('APIToken API', () => {
     });
 
     describe('Delete token', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should delete a token', done => {
             request(app)
             .delete('/api-tokens/1')
+            .set('Authorization', createAuthToken())
             .expect(204)
             .end((err, res) => {
                 if (err) return done(err);
@@ -85,7 +84,7 @@ describe('APIToken API', () => {
         });
 
         it('should return 404 for missing tokens', done => {
-            test404('/api-tokens/1337', done, 'delete');
+            test404('/api-tokens/1337', done, createAuthToken(), 'delete');
         });
     });
 });

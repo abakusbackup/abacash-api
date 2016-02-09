@@ -2,17 +2,13 @@ import chai from 'chai';
 import request from 'supertest';
 import app from '../../src/app';
 import systemFixtures from '../fixtures/systems.json';
-import { loadFixtures } from '../helpers';
+import { loadFixtures, createAuthToken } from '../helpers';
 
 chai.should();
 
 describe('System API', () => {
-    const fixtures = [
-        'systems.json'
-    ];
-
     describe('List systems', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should list systems', done => {
             request(app)
@@ -30,7 +26,7 @@ describe('System API', () => {
     });
 
     describe('Retrieve a system', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should retrieve a system', done => {
             request(app)
@@ -47,7 +43,7 @@ describe('System API', () => {
     });
 
     describe('Create a system', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should create a system', done => {
             const payload = {
@@ -61,6 +57,7 @@ describe('System API', () => {
             request(app)
             .post('/systems')
             .send(payload)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(201)
             .end((err, res) => {
@@ -74,7 +71,7 @@ describe('System API', () => {
 
 
     describe('Update a system', () => {
-        beforeEach(() => loadFixtures(fixtures));
+        beforeEach(() => loadFixtures());
 
         it('should update a system', done => {
             const payload = {
@@ -85,6 +82,7 @@ describe('System API', () => {
             request(app)
             .put('/systems/1')
             .send(payload)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
@@ -105,6 +103,7 @@ describe('System API', () => {
             request(app)
             .put('/systems/1337')
             .send(payload)
+            .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(404)
             .end((err, res) => {
