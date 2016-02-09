@@ -130,17 +130,18 @@ describe('Users API', () => {
         });
     });
 
-    describe('Retrieve current user', () => {
+    describe('/me, retrieve', () => {
 
-        it('should retrieve a user', done => {
+        it('should the currentuser', done => {
             request(app)
-            .get('/users/1')
+            .get('/users/me')
             .set('Authorization', createAuthToken())
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
                 if (err) return done(err);
                 const user = res.body;
+                console.log(user);
                 user.name.should.equal('Test Bruker');
                 should.not.exist(user.hash);
                 done();
@@ -148,5 +149,33 @@ describe('Users API', () => {
         });
 
     });
+
+    describe('/me, update', () => {
+
+        it('should update a user', done => {
+
+            const payload = {
+                email: 'test@test.com',
+                name: 'newname',
+                password: 'testpassword'
+            };
+
+            request(app)
+            .put('/users/me')
+            .send(payload)
+            .set('Authorization', createAuthToken())
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, res) => {
+                if (err) return done(err);
+                const user = res.body;
+                user.name.should.equal(payload.name);
+                should.not.exist(user.hash);
+                done();
+            });
+        });
+
+    });
+
 
 });

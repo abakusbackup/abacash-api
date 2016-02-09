@@ -31,14 +31,3 @@ export function update(req, res, next) {
     })
     .catch(next);
 }
-
-export function destroy(req, res, next) {
-    db.User.destroy({ where: {
-        id: req.user.id
-    } })
-    .then(count => {
-        if (!count) throw new NotFoundError();
-        res.status(204).send();
-    })
-    .catch(next);
-}

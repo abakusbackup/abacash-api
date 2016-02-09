@@ -9,7 +9,6 @@ router.use(isAuthenticated);
 
 router.get('/me', account.retrieve);
 router.put('/me', account.update);
-router.delete('/me', account.destroy);
 
 router.get('/', controller.list);
 router.get('/:id', controller.retrieve);
