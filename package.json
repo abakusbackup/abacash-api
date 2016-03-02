@@ -35,7 +35,7 @@
     "superagent": "1.7.2"
   },
   "devDependencies": {
-    "babel-eslint": "^5.0.0-beta10",
+    "babel-eslint": "^6.0.0-beta",
     "chai": "^3.4.0",
     "chai-as-promised": "^5.1.0",
     "eslint": "^1.10.3",
