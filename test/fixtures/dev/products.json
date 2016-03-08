@@ -1,0 +1,26 @@
+[
+  {
+    "model": "Product",
+    "data": {
+      "type": "Innskudd",
+      "price": -100.0,
+      "internalPrice": -100.0,
+      "name": "Innskudd 100",
+      "active": true,
+      "stock": 0,
+      "systemId": 2
+    }
+  },
+  {
+    "model": "Product",
+    "data": {
+      "type": "Brus",
+      "price": 18.0,
+      "internalPrice": 15.0,
+      "name": "Fanta",
+      "active": true,
+      "stock": 20,
+      "systemId": 2
+    }
+  }
+]

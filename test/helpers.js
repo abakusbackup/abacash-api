@@ -1,11 +1,13 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
+import _ from 'lodash';
 import sequelizeFixtures from 'sequelize-fixtures';
 import db from '../src/models';
 import app from '../src/app';
 import { syncDB } from '../src/model-helpers';
 import config from '../src/config';
 import tokens from './fixtures/api-tokens.json';
+import users from './fixtures/users.js';
 
 export function loadFixtures(fixtures) {
     const f = fixtures || [
@@ -23,9 +25,11 @@ export function loadFixtures(fixtures) {
 }
 
 export function createAuthToken() {
-    const token = jwt.sign({}, config.jwtSecret, {
+    const cleanUser = _.omit(users[0].data, 'hash');
+    cleanUser.id = 1;
+    const token = jwt.sign(cleanUser, config.jwtSecret, {
         expiresIn: '7 days',
-        subject: 1 // fake user id
+        subject: cleanUser.id // fake user id
     });
     return `Bearer ${token}`;
 }
