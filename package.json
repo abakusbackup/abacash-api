@@ -28,7 +28,7 @@
     "pg": "4.5.1",
     "pg-hstore": "2.3.2",
     "sequelize": "3.19.3",
-    "superagent": "1.8.0"
+    "superagent": "1.8.3"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
