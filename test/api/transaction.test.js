@@ -100,6 +100,26 @@ describe('Transaction API', () => {
         it('should return a validation error for sellerId = null on seller enforced system',
         done => {
             const newTransaction = {
+                sellerId: 4, // seller id is not a seller
+                customerId: 1,
+                products: [1]
+            };
+            request(app)
+            .post('/1/transactions/') // system 1 enforces seller
+            .send(newTransaction)
+            .set('Authorization', getAPIToken())
+            .expect('Content-Type', /json/)
+            .expect(400)
+            .end((err, res) => {
+                if (err) return done(err);
+                res.body.message.should.equal('sellerId does not belong to a seller');
+                done();
+            });
+        });
+
+        it('should return a validation error if the sellerId does not belong to a seller',
+        done => {
+            const newTransaction = {
                 customerId: 1,
                 products: [1]
             };

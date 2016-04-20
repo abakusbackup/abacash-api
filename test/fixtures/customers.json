@@ -31,5 +31,16 @@
       "systemId": 2,
       "customerRoleId": 4
     }
+  },
+  {
+    "model": "Customer",
+    "data": {
+      "rfid": "1337",
+      "displayName": "Customer that is not a seller",
+      "username": "notseller",
+      "balance": 200.00,
+      "systemId": 1,
+      "customerRoleId": 1
+    }
   }
 ]
