@@ -4,7 +4,7 @@ import { isTokenAuthenticated, isAuthenticated } from '../auth/middleware';
 
 const router = express.Router();
 
-router.get('/', isTokenAuthenticated, controller.list);
+router.get('/', controller.list);
 router.post('/', isAuthenticated, controller.create);
 router.get('/:id', isTokenAuthenticated, controller.retrieve);
 router.delete('/:id', isAuthenticated, controller.destroy);

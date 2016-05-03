@@ -13,6 +13,19 @@ export function list(req, res, next) {
     .catch(next);
 }
 
+export function systems(req, res, next) {
+    db.User.findOne({ where: {
+        id: req.params.id
+    },
+        include: [{ model: db.System, as: 'systems' }]
+    })
+    .then(user => {
+        if (!user) throw new NotFoundError();
+        res.json(user.systems);
+    })
+    .catch(next);
+}
+
 export function retrieve(req, res, next) {
     db.User.findOne({ where: {
         id: req.params.id

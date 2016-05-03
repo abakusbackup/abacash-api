@@ -21,6 +21,19 @@ export function retrieve(req, res, next) {
     .catch(next);
 }
 
+export function users(req, res, next) {
+    const { id } = req.params;
+    db.System.findOne({
+        where: { id },
+        include: [{ model: db.User, as: 'users' }]
+    })
+    .then(system => {
+        if (!system) throw new NotFoundError();
+        res.json(system.users);
+    })
+    .catch(next);
+}
+
 export function create(req, res, next) {
     db.System.create(req.body)
     .then(system => system.get({ plain: true }))

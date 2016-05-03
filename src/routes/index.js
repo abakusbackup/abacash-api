@@ -5,6 +5,7 @@ import customer from './customer.routes';
 import system from './system.routes';
 import user from './user.routes';
 import product from './product.routes';
+import account from './account.routes';
 import nerd from './nerd.routes';
 import customerRole from './customer-role.routes';
 import transaction from './transaction.routes';
@@ -30,10 +31,12 @@ apiRouter.param('system', (req, res, next, id) => {
 });
 
 apiRouter.use('/authenticate', auth);
-apiRouter.use('/api-tokens', apiToken);
+apiRouter.use('/account', account);
 apiRouter.use('/users', user);
 apiRouter.use('/systems', system);
 apiRouter.use('/nerd', nerd);
+
+apiRouter.use('/:system/api-tokens', apiToken);
 apiRouter.use('/:system/customers', customer);
 apiRouter.use('/:system/roles', customerRole);
 apiRouter.use('/:system/users', systemRole);

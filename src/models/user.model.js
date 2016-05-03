@@ -12,6 +12,10 @@ export default function(sequelize, DataTypes) {
                 isEmail: true
             }
         },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
         name: DataTypes.STRING,
         hash: DataTypes.STRING
     }, {

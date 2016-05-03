@@ -4,7 +4,6 @@ import { isAuthenticated } from '../auth/middleware';
 
 const router = express.Router();
 
-router.use(isAuthenticated);
 router.get('/', controller.list);
 router.post('/', controller.create);
 router.put('/:id', controller.update);

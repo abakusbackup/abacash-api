@@ -27,8 +27,8 @@ export function update(req, res, next) {
         returning: true,
         fields: _.without(Object.keys(req.body), 'userId', 'systemId')
     })
-    .then(role => {
-        res.status(201).json(role);
+    .spread((count, roles) => {
+        res.status(201).json(roles[0]);
     })
     .catch(Sequelize.ValidationError, err => {
         throw new ValidationError(err);
