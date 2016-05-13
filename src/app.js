@@ -13,10 +13,17 @@ import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
 import routes from './routes';
+import raven from 'raven';
+import { sentryClient } from './components/errors';
+import config from './config';
+
+// Global sentry patch
+sentryClient.patchGlobal();
 
 // Setup server
 const app = express();
 
+app.use(raven.middleware.express.requestHandler(config.sentryDsn));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());

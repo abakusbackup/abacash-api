@@ -15,25 +15,25 @@ export function login(req, res, next) {
         throw new AuthenticationError('Invalid credentials provided');
     };
 
-    let _user;
+    let currentUser;
     db.User.findOne({
         where: { email }
     })
     .then(user => {
         if (!user) throwAuthError();
-        _user = user.get({ plain: true });
+        currentUser = user.get({ plain: true });
         return user.authenticate(password);
     })
     .then(valid => {
         if (!valid) throwAuthError();
-        const cleanUser = _.omit(_user, 'hash');
+        const cleanUser = _.omit(currentUser, 'hash');
 
         // Even though jwt has a callback method,
         // there's no point in using it as the functions
         // it executes are synchronous:
         return jwt.sign(cleanUser, config.jwtSecret, {
             expiresIn: config.jwtExpiresIn,
-            subject: _user.id
+            subject: currentUser.id
         });
     })
     .then(token => res.json({ token }))

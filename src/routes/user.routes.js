@@ -1,11 +1,11 @@
 import express from 'express';
 import * as controller from '../controllers/user.controller';
-import { requires } from '../auth';
-import { MODERATOR } from '../auth/constants';
+import { createAuthMiddleware } from '../auth';
+import { ADMINISTRATOR } from '../auth/constants';
 
 const router = express.Router();
 
-router.use(requires(MODERATOR));
+router.use(createAuthMiddleware(ADMINISTRATOR));
 router.get('/', controller.list);
 router.get('/:id/systems', controller.systems);
 router.get('/:id', controller.retrieve);

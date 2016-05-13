@@ -1,11 +1,11 @@
 import chai from 'chai';
 import request from 'supertest';
 import app from '../../src/app';
-import { TOKEN } from '../../src/auth/constants';
+import { MODERATOR } from '../../src/auth/constants';
 import { loadFixtures, test404, createAuthorization } from '../helpers';
 
 const headers = {
-    Authorization: createAuthorization(TOKEN)
+    Authorization: createAuthorization(MODERATOR)
 };
 
 chai.should();

@@ -2,76 +2,63 @@ import db from '../models';
 import config from '../config';
 import { AuthenticationError } from '../components/errors';
 import Bluebird from 'bluebird';
-import expressJwt from 'express-jwt';
+import jwt from 'jsonwebtoken';
 import * as authConstants from './constants';
 
-const authenticateJwt = expressJwt({ secret: config.jwtSecret });
-
-function authenticateToken(req, res) {
-    return new Bluebird(resolve => {
-        const authString = req.get('Authorization');
-        if (!authString) {
-            return resolve(false);
-        }
-        const [scheme, token] = req.get('Authorization').split(' ');
-        if (scheme !== 'Token') {
-            // Only token authentication is accepted
-            return resolve(false);
-        }
-
-        db.APIToken.findOne({
-            where: { token }
-        })
-        .then(apiToken => {
-            if (!apiToken) {
-                return resolve(false);
-            }
-            req.apiToken = apiToken;
-            return resolve(true);
-        });
-    });
+function getToken(authString, acceptedScheme) {
+    if (!authString) {
+        return null;
+    }
+    const [scheme, token] = authString.split(' ');
+    if (scheme !== acceptedScheme) {
+        return null;
+    }
+    return token;
 }
 
-function authenticateModerator(req, res, next) {
-    return new Bluebird(resolve => {
-        const authString = req.get('Authorization');
-        if (!authString) {
-            return resolve(false);
-        }
-        const scheme = req.get('Authorization').split(' ')[0];
-        if (scheme !== 'Bearer') {
-            // Only token authentication is accepted
-            return resolve(false);
-        }
-        return authenticateJwt(req, res, next);
-    });
+function authenticateToken(authString) {
+    const token = getToken(authString, 'Token');
+    if (!token) return Bluebird.resolve(false);
+    return db.APIToken.findOne({
+        where: { token }
+    })
+    .then(apiToken => !!apiToken);
 }
 
-function authenticateAdministrator(req, res, next) {
-    return new Bluebird(resolve => {
-        const authString = req.get('Authorization');
-        if (!authString) {
-            return resolve(false);
-        }
-        const scheme = req.get('Authorization').split(' ')[0];
-        if (scheme !== 'Bearer') {
-            // Only token authentication is accepted
-            return resolve(false);
-        }
-        return authenticateJwt(req, res, next);
-    });
-}
-
-function authenticate(auth, req, res, next) {
-    switch (auth) {
-    case authConstants.TOKEN: return authenticateToken(req, res);
-    case authConstants.MODERATOR: return authenticateModerator(req, res, next);
-    case authConstants.ADMINISTRATOR: return authenticateAdministrator(req, res, next);
+function authenticateModerator(authString) {
+    const token = getToken(authString, 'Bearer');
+    if (!token) return false;
+    try {
+        const decodedToken = jwt.verify(token, config.jwtSecret);
+        return 'isAdmin' in decodedToken && !decodedToken.isAdmin;
+    } catch (err) {
+        return false;
     }
 }
 
-// creates a middleware
-export function requires(auth) {
+function authenticateAdministrator(authString) {
+    const token = getToken(authString, 'Bearer');
+    if (!token) return false;
+    try {
+        const decodedToken = jwt.verify(token, config.jwtSecret);
+        return decodedToken.isAdmin === true;
+    } catch (err) {
+        return false;
+    }
+}
+
+export function authenticate(auth, authString) {
+    switch (auth) {
+    case authConstants.TOKEN:
+        return authenticateToken(authString);
+    case authConstants.MODERATOR:
+        return Bluebird.resolve(authenticateModerator(authString));
+    case authConstants.ADMINISTRATOR:
+        return Bluebird.resolve(authenticateAdministrator(authString));
+    }
+}
+
+export function createAuthMiddleware(auth) {
     return (req, res, next) => {
         let aboveLevel = false;
         let isAuthenticated = false;
@@ -80,11 +67,11 @@ export function requires(auth) {
             if (auth === authInner) {
                 aboveLevel = true;
             }
-            // skip if authenticated or we have not yet come to the correc level(s)
-            if (isAuthenticated === true || aboveLevel === false) {
-                return new Bluebird(resolve => resolve());
+            // skip if authenticated or we have not yet come to the correctlevel(s)
+            if (isAuthenticated || !aboveLevel) {
+                return;
             }
-            return authenticate(authInner, req, res, next)
+            return authenticate(authInner, req.get('Authorization'))
             .then(result => {
                 isAuthenticated = result;
             });

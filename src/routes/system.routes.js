@@ -1,15 +1,13 @@
 import express from 'express';
 import * as controller from '../controllers/system.controller';
-import { requires } from '../auth';
-import { ADMINISTRATOR } from '../auth/constants';
+import { createAuthMiddleware } from '../auth';
+import { TOKEN, ADMINISTRATOR } from '../auth/constants';
 
 const router = express.Router();
 
-router.use(requires(ADMINISTRATOR));
-router.get('/', controller.list);
-router.post('/', controller.create);
-router.get('/:id', controller.retrieve);
-router.get('/:id/users', controller.users);
-router.put('/:id', controller.update);
+router.get('/', createAuthMiddleware(TOKEN), controller.list);
+router.post('/', createAuthMiddleware(ADMINISTRATOR), controller.create);
+router.get('/:id', createAuthMiddleware(TOKEN), controller.retrieve);
+router.put('/:id', createAuthMiddleware(ADMINISTRATOR), controller.update);
 
 export default router;

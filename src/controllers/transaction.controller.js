@@ -4,15 +4,12 @@ import Sequelize from 'sequelize';
 import Bluebird from 'bluebird';
 
 function checkIfSellerIsSeller(sellerId, needSeller) {
-    return new Bluebird(resolve => {
-        if (needSeller) {
-            db.Customer.findById(sellerId)
-            .then(customer => customer.getCustomerRole())
-            .then(role => resolve(role.isSeller));
-        } else {
-            resolve(true);
-        }
-    });
+    if (needSeller) {
+        return db.Customer.findById(sellerId)
+        .then(customer => customer.getCustomerRole())
+        .then(role => role.isSeller);
+    }
+    return Bluebird.resolve(true);
 }
 
 export function list(req, res, next) {
@@ -34,10 +31,10 @@ export function retrieve(req, res, next) {
 }
 
 export function add(req, res, next) {
-    let _transaction;
-    let _customer;
-    let _total;
-    let _customerRole;
+    let currentTransaction;
+    let currentCustomer;
+    let currentTotal;
+    let currentCustomerRole;
 
 
     // start database transaction
@@ -63,13 +60,13 @@ export function add(req, res, next) {
             if (!customer) {
                 throw new ValidationError('Customer for transaction not found');
             }
-            _customer = customer;
+            currentCustomer = customer;
             return customer.getCustomerRole();
         })
 
         // find customer role
         .then(customerRole => {
-            _customerRole = customerRole;
+            currentCustomerRole = customerRole;
             // reduce stock for all products. database transaction must explicitly be
             // set because a new transaction promise chain implies a new transaction
             return Bluebird.mapSeries(req.body.products, id =>
@@ -85,12 +82,12 @@ export function add(req, res, next) {
 
         // calculate sum of all products
         .reduce((sum, product) =>
-            (_customerRole.internalSales ? product.internalPrice : product.price) + sum
+            (currentCustomerRole.internalSales ? product.internalPrice : product.price) + sum
         , 0)
 
         // store total and create transaction
         .then(total => {
-            _total = total;
+            currentTotal = total;
             return db.Transaction.create({
                 ...req.body,
                 systemId: req.system.id,
@@ -100,16 +97,16 @@ export function add(req, res, next) {
 
         // decrease customer balance
         .then(transaction => {
-            _transaction = transaction;
-            _customer.balance -= _total;
-            if (_customer.balance < 0 && _customerRole.allowCredit !== true) {
+            currentTransaction = transaction;
+            currentCustomer.balance -= currentTotal;
+            if (currentCustomer.balance < 0 && currentCustomerRole.allowCredit !== true) {
                 throw new ValidationError('Insufficient balance');
             }
-            return _customer.save();
+            return currentCustomer.save();
         });
     }).then(result => {
         // entire database transaction OK, return newly created transaction
-        res.status(201).json(_transaction);
+        res.status(201).json(currentTransaction);
     }).catch(Sequelize.ValidationError, err => {
         throw new ModelValidationError(err);
     })

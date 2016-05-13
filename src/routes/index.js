@@ -12,6 +12,8 @@ import transaction from './transaction.routes';
 import apiToken from './api-token.routes';
 import systemRole from './system-role.routes';
 import * as errors from '../components/errors';
+import raven from 'raven';
+import config from '../config';
 
 const router = express.Router();
 const apiRouter = express.Router();
@@ -44,6 +46,7 @@ apiRouter.use('/:system/products', product);
 apiRouter.use('/:system/transactions', transaction);
 
 router.use(errors.pageNotFoundMiddleware);
+router.use(raven.middleware.express.errorHandler(config.sentryDsn));
 router.use(errors.errorMiddleware);
 
 export default router;

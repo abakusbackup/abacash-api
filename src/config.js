@@ -10,7 +10,9 @@ const config = {
     secret: 'super-secret-abacash-secret',
     jwtExpiresIn: '7 days',
     // TODO: Use private key instead of secret?
-    jwtSecret: process.env.JWT_SECRET || 'hemmelig'
+    jwtSecret: process.env.JWT_SECRET || 'hemmelig',
+    smtpUrl: process.env.SMTP_URL || 'smtp://127.0.0.1:25',
+    sentryDsn: process.env.SENTRY_DSN || null
 };
 
 export default config;

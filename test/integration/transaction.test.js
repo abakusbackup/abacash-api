@@ -2,13 +2,13 @@ import chai from 'chai';
 import request from 'supertest';
 import Bluebird from 'bluebird';
 import app from '../../src/app';
-import { TOKEN } from '../../src/auth/constants';
+import { MODERATOR } from '../../src/auth/constants';
 import { loadFixtures, createAuthorization } from '../helpers';
 
 const should = chai.should();
 
 const headers = {
-    Authorization: createAuthorization(TOKEN)
+    Authorization: createAuthorization(MODERATOR)
 };
 
 // posts a transaction that should work and check if sum is calculated correctly
