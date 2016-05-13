@@ -38,6 +38,14 @@ export default function(sequelize, DataTypes) {
         instanceMethods: {
             authenticate(password) {
                 return bcrypt.compareAsync(password, this.hash);
+            },
+            setPassword(password) {
+                return bcrypt.genSaltAsync()
+                    .then(salt => bcrypt.hashAsync(password, salt))
+                    .then(hash => {
+                        this.hash = hash;
+                        return this.save();
+                    });
             }
         }
     });

@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import db from '../models';
+import _ from 'lodash';
 import { NotFoundError, ModelValidationError } from '../components/errors';
 
 export function list(req, res, next) {
@@ -36,6 +37,22 @@ export function create(req, res, next) {
     })
     .catch(Sequelize.ValidationError, err => {
         throw new ModelValidationError(err);
+    })
+    .catch(next);
+}
+
+export function update(req, res, next) {
+    db.Product.update(req.body, {
+        where: {
+            id: req.params.id,
+            systemId: req.system.id
+        },
+        returning: true,
+        fields: _.without(Object.keys(req.body), 'id')
+    })
+    .spread((count, product) => {
+        if (!count) throw new NotFoundError();
+        res.json(product[0]);
     })
     .catch(next);
 }

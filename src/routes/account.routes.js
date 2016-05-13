@@ -7,5 +7,7 @@ const router = express.Router();
 
 router.use(requires(MODERATOR));
 router.get('/', controller.retrieve);
+router.put('/', controller.update);
+router.put('/password', controller.password);
 
 export default router;
