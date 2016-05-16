@@ -18,11 +18,11 @@ function getToken(authString, acceptedScheme) {
 
 function authenticateToken(authString) {
     const token = getToken(authString, 'Token');
-    if (!token) return Bluebird.resolve(false);
+    if (!token) return Bluebird.resolve([false, undefined]);
     return db.APIToken.findOne({
         where: { token }
     })
-    .then(apiToken => !!apiToken);
+    .then(apiToken => [!!apiToken, undefined]);
 }
 
 function authenticateModerator(authString) {
@@ -30,9 +30,9 @@ function authenticateModerator(authString) {
     if (!token) return false;
     try {
         const decodedToken = jwt.verify(token, config.jwtSecret);
-        return 'isAdmin' in decodedToken && !decodedToken.isAdmin;
+        return ['isAdmin' in decodedToken && !decodedToken.isAdmin, decodedToken];
     } catch (err) {
-        return false;
+        return [false, undefined];
     }
 }
 
@@ -41,9 +41,9 @@ function authenticateAdministrator(authString) {
     if (!token) return false;
     try {
         const decodedToken = jwt.verify(token, config.jwtSecret);
-        return decodedToken.isAdmin === true;
+        return [decodedToken.isAdmin === true, decodedToken];
     } catch (err) {
-        return false;
+        return [false, undefined];
     }
 }
 
@@ -72,8 +72,9 @@ export function createAuthMiddleware(auth) {
                 return;
             }
             return authenticate(authInner, req.get('Authorization'))
-            .then(result => {
+            .spread((result, user) => {
                 isAuthenticated = result;
+                req.user = user;
             });
         })
         .then(() => {
