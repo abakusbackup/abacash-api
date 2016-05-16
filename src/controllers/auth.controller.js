@@ -33,7 +33,7 @@ export function login(req, res, next) {
         // it executes are synchronous:
         return jwt.sign(cleanUser, config.jwtSecret, {
             expiresIn: config.jwtExpiresIn,
-            subject: _user.id
+            subject: String(_user.id)
         });
     })
     .then(token => res.json({ token }))
