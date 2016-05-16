@@ -2,10 +2,14 @@ import chai from 'chai';
 import jwt from 'jsonwebtoken';
 import { authenticate } from '../../src/auth';
 import { TOKEN, MODERATOR, ADMINISTRATOR } from '../../src/auth/constants';
-import { loadFixtures, mockRequest } from '../helpers';
+import { loadFixtures } from '../helpers';
 import config from '../../src/config';
 
 chai.should();
+
+const mockRequest = header => ({
+    get: () => header
+});
 
 describe('Auth', () => {
     describe('Token', () => {
