@@ -5,7 +5,6 @@ import { TOKEN, MODERATOR } from '../auth/constants';
 
 const router = express.Router();
 
-
 router.get('/', createAuthMiddleware(TOKEN), controller.list);
 router.post('/', createAuthMiddleware(MODERATOR), controller.create);
 router.put('/:id', createAuthMiddleware(TOKEN), controller.update);
