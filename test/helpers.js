@@ -25,7 +25,7 @@ export function loadFixtures(fixtures) {
 export function createAuthToken() {
     const token = jwt.sign({}, config.jwtSecret, {
         expiresIn: '7 days',
-        subject: 1 // fake user id
+        subject: '1' // fake user id
     });
     return `Bearer ${token}`;
 }
