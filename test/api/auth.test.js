@@ -27,7 +27,7 @@ describe('APIToken API', () => {
                 const decoded = jwt.decode(token);
                 decoded.email.should.equal(credentials.email);
                 // Sub should equal the database id, which is 1:
-                decoded.sub.should.equal(1);
+                decoded.sub.should.equal('1');
                 done();
             });
         });
