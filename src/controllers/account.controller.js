@@ -51,7 +51,7 @@ export function password(req, res, next) {
     })
     .spread((valid, user) => {
         if (!valid) throwAuthError();
-        return user.setPassword(newPassword);
+        return user.updatePassword(newPassword);
     })
     .then(user => {
         const cleanUser = clean(user);

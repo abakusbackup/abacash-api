@@ -39,7 +39,7 @@ export default function(sequelize, DataTypes) {
             authenticate(password) {
                 return bcrypt.compareAsync(password, this.hash);
             },
-            setPassword(password) {
+            updatePassword(password) {
                 return bcrypt.genSaltAsync()
                     .then(salt => bcrypt.hashAsync(password, salt))
                     .then(hash => {
