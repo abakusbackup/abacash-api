@@ -47,6 +47,14 @@ function createAdministratorToken() {
     return `Bearer ${token}`;
 }
 
+export function mockRequest(header) {
+    return {
+        get() {
+            return header;
+        }
+    };
+}
+
 export function createAuthorization(auth) {
     switch (auth) {
     case authConstants.TOKEN: return createAPIToken();
