@@ -1,5 +1,6 @@
 import db from '../models';
 import { NotFoundError, ModelValidationError, ValidationError } from '../components/errors';
+import { ConflictError } from '../components/errors';
 import Sequelize from 'sequelize';
 import Bluebird from 'bluebird';
 
@@ -109,6 +110,8 @@ export function add(req, res, next) {
         res.status(201).json(currentTransaction);
     }).catch(Sequelize.ValidationError, err => {
         throw new ModelValidationError(err);
+    }).catch(Sequelize.DatabaseError, err => {
+        throw new ConflictError(err);
     })
     .catch(next);
 }

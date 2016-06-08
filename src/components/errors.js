@@ -56,6 +56,18 @@ export class NotFoundError extends Error {
     status = 404;
 }
 
+export class ConflictError extends Error {
+    name = 'ConflictError';
+    status = 409;
+    constructor(error) {
+        super(error.message);
+        this.payload = {
+            ...error,
+            name: this.name
+        };
+    }
+}
+
 export function errorMiddleware(err, req, res, next) {
     if (process.env.NODE_ENV === 'development') {
         console.log(err.stack);
