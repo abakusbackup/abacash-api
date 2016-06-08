@@ -114,12 +114,7 @@ export function add(req, res, next) {
         res.status(201).json(currentTransaction);
     }).catch(Sequelize.ValidationError, err => {
         throw new errors.ModelValidationError(err);
-    }).catch(err => {
-        if (err.parent) {
-            return err.parent.code === SERIALIZATION_FAILURE;
-        }
-        return false;
-    }, err => {
+    }).catch(err => err.parent && err.parent.code === SERIALIZATION_FAILURE, err => {
         throw new errors.ConflictError(err);
     })
     .catch(next);
