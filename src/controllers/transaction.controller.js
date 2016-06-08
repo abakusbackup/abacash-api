@@ -1,6 +1,5 @@
 import db from '../models';
-import { NotFoundError, ModelValidationError, ValidationError } from '../components/errors';
-import ConflictError from '../components/errors';
+import * as errors from '../components/errors';
 import Sequelize from 'sequelize';
 import Bluebird from 'bluebird';
 import SERIALIZATION_FAILURE from '../components/constants';
@@ -26,7 +25,7 @@ export function retrieve(req, res, next) {
         systemId: req.system.id
     } })
     .then(transaction => {
-        if (!transaction) throw new NotFoundError();
+        if (!transaction) throw new errors.NotFoundError();
         res.json(transaction);
     })
     .catch(next);
@@ -43,24 +42,28 @@ export function add(req, res, next) {
     db.sequelize.transaction(t => {
         // transaction must contain products
         if (!req.body.products || req.body.products.length === 0) {
-            return next(new ValidationError('A transaction must contain at least one product'));
+            return next(
+                new errors.ValidationError('A transaction must contain at least one product')
+            );
         }
 
         // check that seller is included if system needs seller
         if (req.system.needSeller && !req.body.sellerId) {
-            return next(new ValidationError('A transaction for this system requires a seller'));
+            return next(
+                new errors.ValidationError('A transaction for this system requires a seller')
+            );
         }
         // find and store customer
         return checkIfSellerIsSeller(req.body.sellerId, req.system.needSeller)
         .then(isSeller => {
             if (!isSeller) {
-                throw new ValidationError('sellerId does not belong to a seller');
+                throw new errors.ValidationError('sellerId does not belong to a seller');
             }
             return db.Customer.findById(req.body.customerId);
         })
         .then(customer => {
             if (!customer) {
-                throw new ValidationError('Customer for transaction not found');
+                throw new errors.ValidationError('Customer for transaction not found');
             }
             currentCustomer = customer;
             return customer.getCustomerRole();
@@ -102,7 +105,7 @@ export function add(req, res, next) {
             currentTransaction = transaction;
             currentCustomer.balance -= currentTotal;
             if (currentCustomer.balance < 0 && currentCustomerRole.allowCredit !== true) {
-                throw new ValidationError('Insufficient balance');
+                throw new errors.ValidationError('Insufficient balance');
             }
             return currentCustomer.save();
         });
@@ -110,14 +113,14 @@ export function add(req, res, next) {
         // entire database transaction OK, return newly created transaction
         res.status(201).json(currentTransaction);
     }).catch(Sequelize.ValidationError, err => {
-        throw new ModelValidationError(err);
+        throw new errors.ModelValidationError(err);
     }).catch(err => {
         if (err.parent) {
             return err.parent.code === SERIALIZATION_FAILURE;
         }
         return false;
     }, err => {
-        throw new ConflictError(err);
+        throw new errors.ConflictError(err);
     })
     .catch(next);
 }
