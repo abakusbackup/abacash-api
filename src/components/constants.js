@@ -3,3 +3,5 @@ exports.ROLE_TYPES = {
     MODERATOR: 'MODERATOR',
     ADMIN: 'ADMIN'
 };
+
+exports.SERIALZIATION_FAILURE = 40001;
