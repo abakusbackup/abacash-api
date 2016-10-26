@@ -1,6 +1,5 @@
 export default function(sequelize, DataTypes) {
     const Transaction = sequelize.define('transaction', {
-
         total: {
             type: DataTypes.DECIMAL,
             defaultValue: 0.0,
@@ -21,7 +20,7 @@ export default function(sequelize, DataTypes) {
         classMethods: {
             associate(models) {
                 Transaction.belongsToMany(models.Product, {
-                    through: 'transactionProduct'
+                    through: models.TransactionProduct
                 });
                 Transaction.belongsTo(models.Customer, {
                     as: 'customer',

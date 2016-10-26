@@ -2,12 +2,18 @@ import db from '../models';
 import * as errors from '../components/errors';
 import Sequelize from 'sequelize';
 import Bluebird from 'bluebird';
+import { countBy, identity } from 'lodash';
 import SERIALIZATION_FAILURE from '../components/constants';
 
 function checkIfSellerIsSeller(sellerId, needSeller) {
     if (needSeller) {
         return db.Customer.findById(sellerId)
-        .then(customer => customer.getCustomerRole())
+        .then(seller => {
+            if (!seller) {
+                throw new errors.ValidationError('This seller does not exist.');
+            }
+            return seller.getCustomerRole();
+        })
         .then(role => role.isSeller);
     }
     return Bluebird.resolve(true);
@@ -77,6 +83,10 @@ export function add(req, res, next) {
             return Bluebird.mapSeries(req.body.products, id =>
                 db.Product.findById(id, { transaction: t })
                 .then(product => {
+                    if (product.systemId !== req.system.id || !product) {
+                        throw new errors.ValidationError('This product does not exist');
+                    }
+
                     if (product.keepStock) {
                         product.stock--;
                     }
@@ -97,6 +107,13 @@ export function add(req, res, next) {
                 ...req.body,
                 systemId: req.system.id,
                 total
+            })
+            .then(transaction => {
+                const productValues = countBy(req.body.products, identity);
+                return Promise.all(Object.keys(productValues).map(product =>
+                    transaction.addProduct(product, { count: productValues[product] })
+                ))
+                .then(() => transaction);
             });
         })
 
@@ -115,9 +132,11 @@ export function add(req, res, next) {
         res.status(201).json(currentTransaction);
     })
     .catch(Sequelize.ValidationError, err => {
+        console.log(err);
         throw new errors.ModelValidationError(err);
     })
     .catch(err => err.parent && err.parent.code === SERIALIZATION_FAILURE, err => {
+        console.log(err);
         throw new errors.ConflictError(err);
     })
     .catch(next);
