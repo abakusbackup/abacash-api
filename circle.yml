@@ -2,7 +2,7 @@ machine:
   node:
     version: 6.7.0
   environment:
-    PG_URL: 'postgres://root@localhost/circle_test'
+    NODE_ENV: test
 
 dependencies:
   pre:
@@ -11,6 +11,8 @@ dependencies:
     - yarn
 
 test:
+  pre:
+    - createdb abacash-test
   override:
     - yarn test -- --timeout 0
     - yarn run linte
