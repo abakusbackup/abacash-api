@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   pre:
-    - npm install -g yarnpkg
+    - npm install -g yarn
   override:
     - yarn
 
@@ -15,4 +15,4 @@ test:
     - sudo -u postgres createdb abacash-test
   override:
     - yarn test -- --timeout 0
-    - yarn run linte
+    - yarn run lint

@@ -24,10 +24,10 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:watch": "nodemon src/index.js --exec babel-node",
-    "build": "npm run clean  && npm run dist",
+    "build": "npm run clean && npm run dist",
     "dist": "babel src --out-dir dist",
     "load-db": "PG_URL=${PG_URL:-'postgres://localhost/abacash'} babel-node bin/load-db.js",
-    "test": "mocha --compilers js:babel-core/register $(find test -name '*.test.js')",
+    "test": "PG_URL=${PG_URL:-'postgres://localhost/abacash-test'} NODE_ENV=test mocha --compilers js:babel-core/register $(find test -name '*.test.js')",
     "test:watch": "npm test -- --watch --reporter min",
     "lint": "eslint --ignore-path .gitignore .",
     "clean": "rm -rf /dist",
