@@ -1,0 +1,16 @@
+machine:
+  node:
+    version: 6.7.0
+  environment:
+    PG_URL: 'postgres://root@localhost/circle_test'
+
+dependencies:
+  pre:
+    - npm install -g yarnpkg
+  override:
+    - yarn
+
+test:
+  override:
+    - yarn test -- --timeout 0
+    - yarn run linte
