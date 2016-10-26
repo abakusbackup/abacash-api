@@ -12,7 +12,7 @@ dependencies:
 
 test:
   pre:
-    - createdb abacash-test
+    - sudo -u postgres createdb abacash-test
   override:
     - yarn test -- --timeout 0
     - yarn run linte
