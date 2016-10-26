@@ -1,6 +1,8 @@
 machine:
   node:
     version: 6.7.0
+  environment:
+    PG_URL: 'postgres://root@localhost/circle_test'
 
 dependencies:
   pre:
@@ -10,5 +12,5 @@ dependencies:
 
 test:
   override:
-    - PG_URL='postgres://root@localhost/abacash-test' yarn test -- --timeout 0
-    - yarn run lint
+    - yarn test -- --timeout 0
+    - yarn run linte
