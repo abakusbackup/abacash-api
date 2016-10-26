@@ -1,4 +1,4 @@
-# AbaCash API [![Build status](https://ci.frigg.io/badges/abakusbackup/abacash-api/)](https://ci.frigg.io/abakusbackup/abacash-api/last/) [![Coverage status](https://ci.frigg.io/badges/coverage/abakusbackup/abacash-api/)](https://ci.frigg.io/abakusbackup/abacash-api/last/)
+# AbaCash API [![CircleCI](https://circleci.com/gh/abakusbackup/abacash-api/tree/master.svg?style=svg&circle-token=b60d965e77f1a62dd4e85f65aaf90bae3865bd15)](https://circleci.com/gh/abakusbackup/abacash-api/tree/master)
 
 ## Setup
 Install npm modules
