@@ -1,0 +1,14 @@
+machine:
+  node:
+    version: 6.7.0
+
+dependencies:
+  pre:
+    - npm install -g yarnpkg
+  override:
+    - yarn
+
+test:
+  override:
+    - PG_URL='postgres://root@localhost/abacash-test' npm test -- --timeout 0
+    - npm run lint
