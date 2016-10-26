@@ -2,7 +2,7 @@ export default function(sequelize, DataTypes) {
     return sequelize.define('transactionProduct', {
         count: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
+            allowNull: false
         }
     });
 }
