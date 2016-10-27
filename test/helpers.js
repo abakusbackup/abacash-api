@@ -20,7 +20,8 @@ export function loadFixtures(fixtures) {
     ];
     const fixturePaths = f.map(file => `./test/fixtures/${file}`);
     return syncDB({ force: true })
-    .then(() => sequelizeFixtures.loadFiles(fixturePaths, db));
+    .then(() => sequelizeFixtures.loadFiles(fixturePaths, db))
+    .catch(err => { console.log(err); });
 }
 
 function createAPIToken() {

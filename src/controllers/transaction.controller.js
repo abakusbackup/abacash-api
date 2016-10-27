@@ -2,7 +2,7 @@ import db from '../models';
 import * as errors from '../components/errors';
 import Sequelize from 'sequelize';
 import Bluebird from 'bluebird';
-import { countBy, identity } from 'lodash';
+import { countBy } from 'lodash';
 import SERIALIZATION_FAILURE from '../components/constants';
 
 function checkIfSellerIsSeller(sellerId, needSeller) {
@@ -26,10 +26,19 @@ export function list(req, res, next) {
 }
 
 export function retrieve(req, res, next) {
-    db.Transaction.findOne({ where: {
-        id: req.params.transactionId,
-        systemId: req.system.id
-    } })
+    db.Transaction.findOne({
+        where: {
+            id: req.params.transactionId,
+            systemId: req.system.id
+        },
+        include: [
+            {
+                as: 'customer',
+                model: db.Customer
+            },
+            db.Product
+        ]
+    })
     .then(transaction => {
         if (!transaction) throw new errors.NotFoundError();
         res.json(transaction);
@@ -109,8 +118,8 @@ export function add(req, res, next) {
                 total
             })
             .then(transaction => {
-                const productValues = countBy(req.body.products, identity);
-                return Promise.all(Object.keys(productValues).map(product =>
+                const productValues = countBy(req.body.products);
+                return Bluebird.map(Object.keys(productValues), product => (
                     transaction.addProduct(product, { count: productValues[product] })
                 ))
                 .then(() => transaction);
@@ -132,11 +141,9 @@ export function add(req, res, next) {
         res.status(201).json(currentTransaction);
     })
     .catch(Sequelize.ValidationError, err => {
-        console.log(err);
         throw new errors.ModelValidationError(err);
     })
     .catch(err => err.parent && err.parent.code === SERIALIZATION_FAILURE, err => {
-        console.log(err);
         throw new errors.ConflictError(err);
     })
     .catch(next);

@@ -38,7 +38,9 @@ export default function(sequelize, DataTypes) {
                         allowNull: false
                     }
                 });
-                Product.belongsToMany(models.Transaction, { through: 'transactionProduct' });
+                Product.belongsToMany(models.Transaction, {
+                    through: models.TransactionProduct
+                });
             }
         }
     });
