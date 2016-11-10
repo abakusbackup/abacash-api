@@ -34,7 +34,7 @@
     "transfer": "PG_URL=${PG_URL:-'postgres://localhost/abacash'} node scripts/transfer.js"
   },
   "dependencies": {
-    "bcrypt": "0.8.6",
+    "bcrypt": "0.8.7",
     "bluebird": "3.4.0",
     "body-parser": "1.15.1",
     "compression": "1.6.2",
