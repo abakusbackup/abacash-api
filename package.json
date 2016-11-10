@@ -71,7 +71,7 @@
     "eslint-config-airbnb": "^9.0.0",
     "eslint-config-webkom": "^1.3.4",
     "eslint-plugin-import": "^1.6.1",
-    "mocha": "^2.4.5",
+    "mocha": "^3.1.2",
     "mongodb": "^2.1.16",
     "nodemailer-stub-transport": "^1.0.0",
     "sequelize-fixtures": "git+https://github.com/abakusbackup/sequelize-fixtures.git",
