@@ -1,4 +1,4 @@
-# AbaCash API [![CircleCI](https://circleci.com/gh/abakusbackup/abacash-api/tree/master.svg?style=svg&circle-token=b60d965e77f1a62dd4e85f65aaf90bae3865bd15)](https://circleci.com/gh/abakusbackup/abacash-api/tree/master)
+# AbaCash API [![Build Status](https://ci.abakus.no/api/badges/abakusbackup/abacash-api/status.svg)](https://ci.abakus.no/abakusbackup/abacash-api)
 
 ## Setup
 Install npm modules

@@ -1,0 +1,16 @@
+.git/
+
+node_modules
+.tmp
+.idea
+/src/config/local.env.js
+.DS_Store
+npm-debug.log
+
+
+#vim
+*.swp
+*.swo
+.environment
+
+dist

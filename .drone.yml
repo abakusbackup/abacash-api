@@ -1,0 +1,35 @@
+pipeline:
+  tests:
+    image: node:6
+    when:
+      event: push
+    environment:
+      - NODE_ENV=test
+    commands:
+      - npm install -g yarn
+      - yarn
+
+      - PG_URL='postgres://postgres@localhost/abacash-test' yarn test -- --timeout 0
+      - yarn run lint
+
+  docker:
+    image: plugins/docker
+    when:
+      branch: release
+      event: push
+    repo: abakus/abacash-api
+    tag: latest
+
+  slack:
+    image: plugins/slack
+    when:
+      status: [ success, failure ]
+      event: push
+    channel: abacash
+
+services:
+  database:
+    image: postgres:9.5
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_DB=abacash-test
