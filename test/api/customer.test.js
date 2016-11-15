@@ -86,11 +86,11 @@ describe('Customer API', () => {
             });
         });
 
-        it('should return a validation error for missing rfid', done => {
+        it('should not create a new customer with identical systemId + rfid', done => {
             const newCustomer = {
-                username: 'newcus',
+                username: 'newcust',
                 displayName: 'New Customer',
-                balance: 524
+                rfid: 'cb:51:34:49'
             };
             request(app)
             .post('/1/customers/')
@@ -100,7 +100,25 @@ describe('Customer API', () => {
             .expect(400)
             .end((err, res) => {
                 if (err) return done(err);
-                res.body.message.should.equal('notNull Violation: rfid cannot be null');
+                res.body.message.should.equal('Validation error');
+                res.body.errors.length.should.equal(2);
+                done();
+            });
+        });
+
+        it('should return a validation error for missing username', done => {
+            const newCustomer = {
+                displayName: 'New Customer'
+            };
+            request(app)
+            .post('/1/customers/')
+            .send(newCustomer)
+            .set(headers)
+            .expect('Content-Type', /json/)
+            .expect(400)
+            .end((err, res) => {
+                if (err) return done(err);
+                res.body.message.should.equal('notNull Violation: username cannot be null');
                 res.body.errors.length.should.equal(1);
                 done();
             });

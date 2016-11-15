@@ -95,7 +95,7 @@
   {
     "model": "Customer",
     "data": {
-      "rfid": "1234",
+      "rfid": "12345",
       "displayName": "Internal",
       "username": "Internal",
       "balance": 100.0,
@@ -106,7 +106,7 @@
   {
     "model": "Customer",
     "data": {
-      "rfid": "1234",
+      "rfid": "123456",
       "displayName": "External",
       "username": "external",
       "balance": 149.5,
