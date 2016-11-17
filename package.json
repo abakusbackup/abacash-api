@@ -29,8 +29,9 @@
     "start:watch": "nodemon src/index.js --exec babel-node",
     "build": "npm run clean && npm run dist",
     "dist": "babel src --out-dir dist",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "load-db": "PG_URL=${PG_URL:-'postgres://localhost/abacash'} babel-node bin/load-db.js",
-    "test": "PG_URL=${PG_URL:-'postgres://localhost/abacash-test'} NODE_ENV=test mocha --compilers js:babel-core/register $(find test -name '*.test.js')",
+    "test": "PG_URL=${PG_URL:-'postgres://localhost/abacash-test'} NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha $(find test -name '*.test.js')",
     "test:watch": "npm test -- --watch --reporter min",
     "lint": "eslint --ignore-path .gitignore .",
     "clean": "rm -rf /dist"
@@ -42,6 +43,7 @@
     "continuation-local-storage": "3.2.0",
     "cookie-parser": "1.4.3",
     "cors": "2.8.1",
+    "coveralls": "^2.11.15",
     "errorhandler": "1.5.0",
     "express": "4.13.4",
     "express-handlebars": "^3.0.0",
