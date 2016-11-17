@@ -11,6 +11,7 @@ pipeline:
 
       - PG_URL='postgres://postgres@localhost/abacash-test' yarn test -- --timeout 0
       - yarn run lint
+      - yarn coverage
 
   docker:
     image: plugins/docker

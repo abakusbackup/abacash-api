@@ -4,6 +4,7 @@ node_modules
 /src/config/local.env.js
 .DS_Store
 npm-debug.log
+.nyc_output/
 
 
 #vim
