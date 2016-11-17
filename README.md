@@ -1,4 +1,4 @@
-# AbaCash API [![Build Status](https://ci.abakus.no/api/badges/abakusbackup/abacash-api/status.svg)](https://ci.abakus.no/abakusbackup/abacash-api)
+# AbaCash API [![Build Status](https://ci.abakus.no/api/badges/abakusbackup/abacash-api/status.svg)](https://ci.abakus.no/abakusbackup/abacash-api) [![Coverage Status](https://coveralls.io/repos/github/abakusbackup/abacash-api/badge.svg?branch=master)](https://coveralls.io/github/abakusbackup/abacash-api?branch=master)
 
 > Node backend for AbaCash
 
