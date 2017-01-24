@@ -9,3 +9,7 @@ const influx = config.influx ? new Influx.InfluxDB({
 export function createEvent(points) {
     return influx ? influx.writePoints(points) : Promise.resolve();
 }
+
+export function createDatabase() {
+    return influx ? influx.createDatabase(config.influxDatabase) : Promise.resolve();
+}

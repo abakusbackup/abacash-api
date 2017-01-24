@@ -19,6 +19,6 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "4000:3000"
+      - "3000:3000"
     links:
       - influxdb

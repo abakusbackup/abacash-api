@@ -1,5 +1,3 @@
-#!/usr/bin/env babel-node
-
 import db from '../src/models';
 import sequelizeFixtures from 'sequelize-fixtures';
 import { syncDB } from '../src/model-helpers';

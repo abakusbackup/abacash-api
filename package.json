@@ -31,7 +31,8 @@
     "dist": "babel src --out-dir dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "load-db": "PG_URL=${PG_URL:-'postgres://abacash:@localhost/abacash'} babel-node bin/load-db.js",
-    "test": "PG_URL=${PG_URL:-'postgres://localhost/abacash-test'} NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha $(find test -name '*.test.js')",
+    "setup-stats": "INFLUX=localhost  babel-node bin/setup-stats.js",
+    "test": "PG_URL=${PG_URL:-'postgres://localhost/abacash-test'} INFLUX=localhost NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha $(find test -name '*.test.js')",
     "test:watch": "npm test -- --watch --reporter min",
     "lint": "eslint --ignore-path .gitignore .",
     "clean": "rm -rf /dist"
@@ -48,6 +49,7 @@
     "express": "4.13.4",
     "express-handlebars": "^3.0.0",
     "influx": "^5.0.0-alpha.4",
+    "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "7.0.0",
     "lodash": "4.17.2",
     "method-override": "2.3.6",
