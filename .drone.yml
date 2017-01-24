@@ -9,7 +9,7 @@ pipeline:
       - npm install -g yarn
       - yarn
 
-      - PG_URL='postgres://postgres@localhost/abacash-test' yarn test -- --timeout 0
+      - yarn test -- --timeout 0
       - yarn run lint
       - yarn coverage
 
@@ -32,5 +32,4 @@ services:
   database:
     image: postgres:9.5
     environment:
-      - POSTGRES_USERNAME=postgres
-      - POSTGRES_DB=abacash-test
+      - POSTGRES_USERNAME=abacash
