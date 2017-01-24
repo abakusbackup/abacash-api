@@ -9,40 +9,11 @@ npm install -g yarn
 yarn
 ```
 
-### Setup database
-#### Install [PostgreSQL](https://www.postgresql.org/)
-##### Mac
-```bash
-brew install postgresql
-```
-
-##### Ubuntu
-```bash
-sudo apt-get update
-sudo apt-get install postgresql postgresql-contrib
-```
-
-###### Configuration on Ubuntu
-First, open `/etc/postgresql/X.X/main/pg_hba.conf`.
-Edit the METHOD of the lines following `# IPv4 local connections` and `# IPv6 local connections` to `trust`.
-
-Then create a role for your user
-```bash
-sudo creatuser -s $USER
-```
-
-#### Create the AbaCash database
-Enter psql shell in default database template1
-```bash
-psql -d template1
-```
-In the psql shell run this command:
-```bash
-CREATE DATABASE abacash
-```
-
 ## Getting Started
 ```bash
+# Start required backend services with docker-compose
+$ docker-compose up
+
 # With reloading (development):
 $ yarn start:watch
 
@@ -80,3 +51,10 @@ $ yarn lint
 $ yarn load-db
 ```
 Will fill the `abacash` postgres database with fixtures from `./fixtures/`. Connection string can be set by setting environment variable `PG_URL`. Contents in the `fixtures` are not (and should not be) used for automatic testing, which means the fixtures can be edited to test the client.
+
+## Setup the stats backend
+```
+$ yarn setup-stats
+```
+This command prepares InfluxDB and Grafana for stats ingestion.
+You can visit Grafana at http://127.0.0.1:3000. Credentials admin:admin.

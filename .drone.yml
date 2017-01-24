@@ -32,4 +32,6 @@ services:
   database:
     image: postgres:9.5
     environment:
-      - POSTGRES_USERNAME=abacash
+      - POSTGRES_USER=abacash
+  influxdb:
+    image: influxdb:alpine

@@ -25,7 +25,8 @@ export default function(sequelize, DataTypes) {
                     {
                         measurement: 'transaction',
                         tags: {
-                            user: customer.username
+                            user: customer.username,
+                            displayName: customer.displayName
                         },
                         fields: {
                             total: Number(transaction.total)
