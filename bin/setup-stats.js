@@ -10,7 +10,7 @@ import { createDatabase } from '../src/stats';
 
 const influx = config.influx;
 const dashboard = require('../dashboard.json');
-const grafanaBaseUrl = 'http://admin:admin@127.0.0.1:3000/api';
+const grafanaBaseUrl = 'http://admin:admin@127.0.0.1:5000/api';
 
 if (!influx) {
     throw new Error('You need to set the influx property in src/config.');
@@ -51,8 +51,4 @@ const createDashboard = () => fetch(`${grafanaBaseUrl}/dashboards/db`, {
 
 createDatabase()
     .then(createDatasource)
-    .then(createDashboard)
-    .catch(err => {
-        console.log(err);
-        process.exit(1);
-    });
+    .then(createDashboard);

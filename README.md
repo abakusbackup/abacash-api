@@ -57,4 +57,4 @@ Will fill the `abacash` postgres database with fixtures from `./fixtures/`. Conn
 $ yarn setup-stats
 ```
 This command prepares InfluxDB and Grafana for stats ingestion.
-You can visit Grafana at http://127.0.0.1:3000. Credentials admin:admin.
+You can visit Grafana at http://127.0.0.1:5000. Credentials admin:admin.

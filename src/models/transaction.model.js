@@ -21,7 +21,7 @@ export default function(sequelize, DataTypes) {
     }, {
         hooks: {
             afterCreate: transaction => transaction.getCustomer()
-                .then(customer => createEvent([
+                .then(customer => transaction.total > 0 ? createEvent([
                     {
                         measurement: 'transaction',
                         tags: {
@@ -29,10 +29,11 @@ export default function(sequelize, DataTypes) {
                             displayName: customer.displayName
                         },
                         fields: {
-                            total: Number(transaction.total)
+                            total: Number(transaction.total),
+                            user_id: Number(customer.id)
                         }
                     }
-                ])
+                ]) : Promise.resolve()
             )
         },
 
