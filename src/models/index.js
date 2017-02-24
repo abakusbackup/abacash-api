@@ -10,7 +10,7 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 // create sequelize instance with continuation local storage
 Sequelize.cls = namespace;
-const sequelize = new Sequelize(config.pgUrl, { logging });
+const sequelize = new Sequelize(config.pgUrl, { logging, databaseVersion: config.databaseVersion });
 
 
 const db = fs
