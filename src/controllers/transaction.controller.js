@@ -54,7 +54,7 @@ export function add(req, res, next) {
 
 
     // start database transaction
-    db.sequelize.transaction(t => {
+    db.sequelize.transaction({ autocommit: false }, t => {
         // transaction must contain products
         if (!req.body.products || req.body.products.length === 0) {
             return next(
