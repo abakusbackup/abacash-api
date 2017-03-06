@@ -41,7 +41,7 @@
   "dependencies": {
     "bcrypt": "1.0.2",
     "bluebird": "3.4.7",
-    "body-parser": "1.17.0",
+    "body-parser": "1.17.1",
     "continuation-local-storage": "3.2.0",
     "cookie-parser": "1.4.3",
     "cors": "2.8.1",
