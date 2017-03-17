@@ -61,7 +61,7 @@
     "raven": "1.2.0",
     "sequelize": "3.30.2",
     "superagent": "3.5.0",
-    "winston": "2.2.0"
+    "winston": "2.3.1"
   },
   "devDependencies": {
     "babel-cli": "6.23.0",
