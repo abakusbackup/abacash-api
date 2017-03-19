@@ -25,25 +25,25 @@ const fixtures = [
     `${temp}/transaction-products.json`
 ];
 
-const parseSystemRoles = () => db.map('SELECT * FROM "systemRoles"', [], customer => ({ model: 'SystemRole', data: customer }))
+const parseSystemRoles = () => db.map('SELECT * FROM "systemRoles"', [], a => ({ model: 'SystemRole', data: a }))
     .then(customers => jsonfile.writeFileAsync(`${temp}/system-roles.json`, customers));
 
-const parseCustomer = () => db.map('SELECT * FROM customers', [], customer => ({ model: 'Customer', data: customer }))
+const parseCustomer = () => db.map('SELECT * FROM customers', [], a => ({ model: 'Customer', data: a }))
     .then(customers => jsonfile.writeFileAsync(`${temp}/customers.json`, customers));
 
-const parseUsers = () => db.map('SELECT * FROM users', [], user => ({ model: 'User', data: user }))
+const parseUsers = () => db.map('SELECT * FROM users', [], a => ({ model: 'User', data: a }))
     .then(users => jsonfile.writeFileAsync(`${temp}/users.json`, users));
 
-const parseTransactions = () => db.map('SELECT * FROM transactions', [], transaction => ({ model: 'Transaction', data: transaction }))
+const parseTransactions = () => db.map('SELECT * FROM transactions', [], a => ({ model: 'Transaction', data: a }))
     .then(trans => jsonfile.writeFileAsync(`${temp}/transactions.json`, trans));
 
-const parseCustomerRoles = () => db.map('SELECT * FROM "customerRoles"', [], role => ({ model: 'CustomerRole', data: role }))
+const parseCustomerRoles = () => db.map('SELECT * FROM "customerRoles"', [], a => ({ model: 'CustomerRole', data: a }))
     .then(roles => jsonfile.writeFileAsync(`${temp}/customer-roles.json`, roles));
 
-const parseAPITokens = () => db.map('SELECT * FROM "APITokens"', [], token => ({ model: 'APIToken', data: token }))
+const parseAPITokens = () => db.map('SELECT * FROM "APITokens"', [], a => ({ model: 'APIToken', data: a }))
     .then(tokens => jsonfile.writeFileAsync(`${temp}/api-tokens.json`, tokens));
 
-const parseTransactionProducts = () => db.map('SELECT * FROM "transactionProducts"', [], tran => ({ model: 'TransactionProduct', data: tran }))
+const parseTransactionProducts = () => db.map('SELECT * FROM "transactionProducts"', [], a => ({ model: 'TransactionProduct', data: a }))
     .then(trans => jsonfile.writeFileAsync(`${temp}/transaction-products.json`, trans));
 
 const parseSystems = () => db.many('SELECT * FROM systems')
