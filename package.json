@@ -53,7 +53,7 @@
     "jsonwebtoken": "7.3.0",
     "lodash": "4.17.2",
     "method-override": "2.3.7",
-    "morgan": "1.8.1",
+    "morgan": "1.8.2",
     "nodemailer": "3.0.2",
     "nodemailer-express-handlebars": "2.0.0",
     "pg": "6.1.0",
