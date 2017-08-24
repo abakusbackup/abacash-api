@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "analytics-node": "2.4.0",
-    "bcrypt": "1.0.2",
+    "bcrypt": "1.0.3",
     "bluebird": "3.5.0",
     "body-parser": "1.16.1",
     "continuation-local-storage": "3.2.0",
