@@ -54,7 +54,7 @@
     "lodash": "4.17.2",
     "method-override": "2.3.7",
     "morgan": "1.8.1",
-    "nodemailer": "3.0.2",
+    "nodemailer": "4.1.0",
     "nodemailer-express-handlebars": "2.0.0",
     "pg": "6.1.0",
     "pg-promise": "5.5.6",
