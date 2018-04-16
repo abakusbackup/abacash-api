@@ -16,18 +16,10 @@
   "bugs": {
     "url": "https://github.com/abakusbackup/abacash-api/issues"
   },
-  "keywords": [
-    "Abakus",
-    "Abacash",
-    "Sequelize",
-    "Express",
-    "REST"
-  ],
+  "keywords": ["Abakus", "Abacash", "Sequelize", "Express", "REST"],
   "eslintConfig": {
     "parser": "babel-eslint",
-    "plugins": [
-      "prettier"
-    ],
+    "plugins": ["prettier"],
     "rules": {
       "prettier/prettier": "error"
     }
@@ -36,10 +28,7 @@
     "singleQuote": true
   },
   "babel": {
-    "presets": [
-      "es2015",
-      "stage-0"
-    ]
+    "presets": ["es2015", "stage-0"]
   },
   "homepage": "https://github.com/abakusbackup/abacash-client#readme",
   "scripts": {
