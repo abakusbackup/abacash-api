@@ -1,5 +1,5 @@
-FROM node:9-alpine
-MAINTAINER Abakus backup <backup@abakus.no>
+FROM node:9
+MAINTAINER Abakus Webkom <webkom@abakus.no>
 
 ARG RELEASE
 
