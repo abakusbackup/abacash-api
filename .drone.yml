@@ -5,7 +5,7 @@ pipeline:
       event: push
     environment:
       - NODE_ENV=test
-      - PG_URL=postgres://abacash:@database/abacash
+      - PG_URL=postgresql://abacash:@database/abacash
     secrets: [ segment_write_key ]
     commands:
       - yarn

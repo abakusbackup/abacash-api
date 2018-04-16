@@ -11,7 +11,7 @@ COPY package.json package.json
 COPY src src
 
 # Build image
-RUN yarn --production
+RUN yarn
 RUN yarn build
 
 ENV NODE_ENV production
